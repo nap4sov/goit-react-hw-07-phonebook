@@ -1,31 +1,50 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
-import { addContact, deleteContact, filterContacts } from './actions';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
-const LS_KEY = 'contacts';
-
-const contactsPersistConfig = {
-    key: LS_KEY,
-    storage,
-    blacklist: 'filter',
-};
+import {
+    fetchContactsRequest,
+    fetchContactsSuccess,
+    fetchContactsError,
+    addContactRequest,
+    addContactSuccess,
+    addContactError,
+    deleteContactRequest,
+    deleteContactSuccess,
+    deleteContactError,
+    filterContacts,
+} from './actions';
 
 const itemsReducer = createReducer([], {
-    [addContact]: (state, { payload }) => [payload, ...state],
-    [deleteContact]: (state, { payload }) => state.filter(({ id }) => id !== payload),
+    [fetchContactsSuccess]: (_, { payload }) => payload,
+    [addContactSuccess]: (state, { payload }) => [payload, ...state],
+    [deleteContactSuccess]: (state, { payload }) => state.filter(({ id }) => id !== payload),
 });
 
 const filterReducer = createReducer('', {
-    [filterContacts]: (_, action) => action.payload,
+    [filterContacts]: (_, { payload }) => payload,
+});
+
+const loadingReducer = createReducer(false, {
+    [fetchContactsRequest]: () => true,
+    [fetchContactsSuccess]: () => false,
+    [fetchContactsError]: () => false,
+    [addContactRequest]: () => true,
+    [addContactSuccess]: () => false,
+    [addContactError]: () => false,
+    [deleteContactRequest]: () => true,
+    [deleteContactSuccess]: () => false,
+    [deleteContactError]: () => false,
+});
+
+const errorReducer = createReducer(null, {
+    [fetchContactsError]: (_, { payload }) => payload,
+    [addContactError]: (_, { payload }) => payload,
+    [deleteContactError]: (_, { payload }) => payload,
 });
 
 export const rootReducer = {
-    contacts: persistReducer(
-        contactsPersistConfig,
-        combineReducers({
-            items: itemsReducer,
-            filter: filterReducer,
-        }),
-    ),
+    contacts: combineReducers({
+        items: itemsReducer,
+        filter: filterReducer,
+    }),
+    loading: loadingReducer,
+    error: errorReducer,
 };

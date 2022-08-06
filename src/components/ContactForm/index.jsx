@@ -1,14 +1,13 @@
-import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/actions';
+import { addContact } from 'redux/operations';
 import styles from './styles.module.scss';
 
 const ContactForm = () => {
     const dispatch = useDispatch();
     const contacts = useSelector(state => state.contacts.items);
     const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+    const [phone, setPhone] = useState('');
 
     const listContainsContact = contact => {
         return contacts.some(({ name }) => name.toLowerCase() === contact.name.toLowerCase());
@@ -21,8 +20,8 @@ const ContactForm = () => {
             case 'name':
                 setName(value);
                 break;
-            case 'number':
-                setNumber(value);
+            case 'phone':
+                setPhone(value);
                 break;
 
             default:
@@ -32,7 +31,7 @@ const ContactForm = () => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        const contact = { name, number, id: nanoid() };
+        const contact = { name, phone };
 
         if (listContainsContact(contact)) {
             return alert(`${contact.name} is already in contacts.`);
@@ -40,7 +39,7 @@ const ContactForm = () => {
 
         dispatch(addContact(contact));
         setName('');
-        setNumber('');
+        setPhone('');
     };
 
     return (
@@ -64,10 +63,10 @@ const ContactForm = () => {
                 Number
                 <input
                     onChange={handleInput}
-                    value={number}
+                    value={phone}
                     className={styles.input}
                     type="tel"
-                    name="number"
+                    name="phone"
                     pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                     title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                     required
