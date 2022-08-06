@@ -36,15 +36,18 @@ const loadingReducer = createReducer(false, {
 
 const errorReducer = createReducer(null, {
     [fetchContactsError]: (_, { payload }) => payload,
+    [fetchContactsRequest]: () => null,
     [addContactError]: (_, { payload }) => payload,
+    [addContactRequest]: () => null,
     [deleteContactError]: (_, { payload }) => payload,
+    [deleteContactRequest]: () => null,
 });
 
 export const rootReducer = {
     contacts: combineReducers({
         items: itemsReducer,
         filter: filterReducer,
+        loading: loadingReducer,
     }),
-    loading: loadingReducer,
     error: errorReducer,
 };

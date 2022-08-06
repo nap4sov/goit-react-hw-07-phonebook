@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/operations';
+import { getContacts } from 'redux/selectors';
 import styles from './styles.module.scss';
 
 const ContactForm = () => {
     const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts.items);
+    const contacts = useSelector(getContacts);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
 

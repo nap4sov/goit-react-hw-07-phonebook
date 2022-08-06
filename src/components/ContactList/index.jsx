@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import ContactListItem from 'components/ContactListItem';
 import Notification from 'components/Notification';
 import { fetchContacts } from 'redux/operations';
+import { getIsLoading, getFilteredContacts, contactsIsEmpty } from 'redux/selectors';
 import styles from './styles.module.scss';
 
 const ContactList = () => {
@@ -11,14 +12,9 @@ const ContactList = () => {
         dispatch(fetchContacts());
     }, [dispatch]);
 
-    const contacts = useSelector(state => state.contacts.items);
-    const isLoading = useSelector(state => state.loading);
-    const filterValue = useSelector(state => state.contacts.filter);
-
-    const contactsListEmpty = contacts.length === 0;
-    const filteredContacts = contacts.filter(({ name }) =>
-        name.toLowerCase().includes(filterValue),
-    );
+    const isLoading = useSelector(getIsLoading);
+    const contactsListEmpty = useSelector(contactsIsEmpty);
+    const filteredContacts = useSelector(getFilteredContacts);
 
     if (isLoading) {
         return <p>Loading...</p>;
