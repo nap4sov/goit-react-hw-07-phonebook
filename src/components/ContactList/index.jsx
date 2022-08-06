@@ -3,7 +3,12 @@ import { useEffect } from 'react';
 import ContactListItem from 'components/ContactListItem';
 import Notification from 'components/Notification';
 import { fetchContacts } from 'redux/operations';
-import { getIsLoading, getFilteredContacts, contactsIsEmpty } from 'redux/selectors';
+import {
+    getIsLoading,
+    getFilteredContacts,
+    contactsIsEmpty,
+    getErrorMessage,
+} from 'redux/selectors';
 import styles from './styles.module.scss';
 
 const ContactList = () => {
@@ -15,9 +20,13 @@ const ContactList = () => {
     const isLoading = useSelector(getIsLoading);
     const contactsListEmpty = useSelector(contactsIsEmpty);
     const filteredContacts = useSelector(getFilteredContacts);
+    const errorMessage = useSelector(getErrorMessage);
 
     if (isLoading) {
         return <p>Loading...</p>;
+    }
+    if (errorMessage) {
+        return <Notification title={errorMessage} />;
     }
     if (contactsListEmpty) {
         return <Notification title="Contacts list is empty" />;

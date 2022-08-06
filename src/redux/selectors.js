@@ -11,3 +11,5 @@ export const getFilteredContacts = state => {
 };
 
 export const contactsIsEmpty = state => getContacts(state).length === 0;
+
+export const getErrorMessage = state => state.error;

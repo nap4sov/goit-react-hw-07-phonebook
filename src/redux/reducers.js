@@ -25,11 +25,11 @@ const loadingReducer = createReducer(false, {
 });
 
 const errorReducer = createReducer(null, {
-    [fetchContacts.rejected]: (_, { payload }) => payload,
+    [fetchContacts.rejected]: (_, { error }) => error.message,
     [fetchContacts.pending]: () => null,
-    [addContact.rejected]: (_, { payload }) => payload,
+    [addContact.rejected]: (_, { error }) => error.message,
     [addContact.pending]: () => null,
-    [deleteContact.rejected]: (_, { payload }) => payload,
+    [deleteContact.rejected]: (_, { error }) => error.message,
     [deleteContact.pending]: () => null,
 });
 
