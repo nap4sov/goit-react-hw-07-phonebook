@@ -1,4 +1,4 @@
-import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
 import { filterContacts } from './actions';
 import { fetchContacts, addContact, deleteContact } from './operations';
 
@@ -33,11 +33,5 @@ const errorReducer = createReducer(null, {
     [deleteContact.pending]: () => null,
 });
 
-export const rootReducer = {
-    contacts: combineReducers({
-        items: itemsReducer,
-        filter: filterReducer,
-        loading: loadingReducer,
-    }),
-    error: errorReducer,
-};
+
+export { itemsReducer, filterReducer, loadingReducer, errorReducer };
